@@ -1,8 +1,8 @@
-package com.PetersonSantos9K.docflow_api.service.ingestion;
+package com.PetersonSantos9K.docflow_api.ingestion;
 
 
 import com.PetersonSantos9K.docflow_api.ingestion.repository.RepositoryDownloader;
-import com.PetersonSantos9K.docflow_api.ingestion.repository.service.JGitRepositoryDownloaderService;
+import com.PetersonSantos9K.docflow_api.ingestion.repository.JGitRepositoryDownloader;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -15,7 +15,7 @@ public class IngestionService {
 
     private final RepositoryDownloader repositoryDownloader;
 
-    public IngestionService(JGitRepositoryDownloaderService jGit){
+    public IngestionService(JGitRepositoryDownloader jGit){
         this.repositoryDownloader = jGit;
     }
 

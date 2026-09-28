@@ -1,18 +1,16 @@
-package com.PetersonSantos9K.docflow_api.ingestion.repository.service;
+package com.PetersonSantos9K.docflow_api.ingestion.repository;
 
-import com.PetersonSantos9K.docflow_api.ingestion.repository.RepositoryDownloader;
-import com.PetersonSantos9K.docflow_api.ingestion.repository.RepositoryDownloaderException;
 import com.PetersonSantos9K.docflow_api.ingestion.workspace.WorkspaceLocation;
 import com.PetersonSantos9K.docflow_api.ingestion.workspace.LocalWorkspaceProvider;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-@Service
-public class JGitRepositoryDownloaderService implements RepositoryDownloader {
+@Component
+public class JGitRepositoryDownloader implements RepositoryDownloader {
 
     private Path downloadRepository(String repositoryUrl){
         WorkspaceLocation workspaceLocation = LocalWorkspaceProvider.createWorkspace();

@@ -1,7 +1,6 @@
-package com.PetersonSantos9K.docflow_api.api.controller;
+package com.PetersonSantos9K.docflow_api.ingestion;
 
-import com.PetersonSantos9K.docflow_api.api.dto.request.IngestionUrlRequestDTO;
-import com.PetersonSantos9K.docflow_api.service.ingestion.IngestionService;
+import com.PetersonSantos9K.docflow_api.ingestion.dto.request.IngestionUrlRequestDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

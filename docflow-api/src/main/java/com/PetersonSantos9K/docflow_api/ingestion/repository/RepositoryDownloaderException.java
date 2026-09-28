@@ -10,6 +10,4 @@ public class RepositoryDownloaderException extends IngestionException {
     public RepositoryDownloaderException(String message) {
         super(message);
     }
-
-
 }

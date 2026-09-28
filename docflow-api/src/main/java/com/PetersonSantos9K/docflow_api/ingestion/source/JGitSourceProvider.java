@@ -1,5 +1,6 @@
-package com.PetersonSantos9K.docflow_api.ingestion.repository;
+package com.PetersonSantos9K.docflow_api.ingestion.source;
 
+import com.PetersonSantos9K.docflow_api.ingestion.IngestionContext;
 import com.PetersonSantos9K.docflow_api.ingestion.workspace.WorkspaceLocation;
 import com.PetersonSantos9K.docflow_api.ingestion.workspace.LocalWorkspaceProvider;
 import org.eclipse.jgit.api.Git;
@@ -10,11 +11,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 @Component
-public class JGitRepositoryDownloader implements RepositoryDownloader {
+public class JGitSourceProvider implements SourceProvider {
 
-    private Path downloadRepository(String repositoryUrl){
+    private IngestionContext jGitDownloadRepository(String repositoryUrl){
         WorkspaceLocation workspaceLocation = LocalWorkspaceProvider.createWorkspace();
-
 
         try(Git git = Git.cloneRepository()
                 .setURI(repositoryUrl)
@@ -24,18 +24,17 @@ public class JGitRepositoryDownloader implements RepositoryDownloader {
             Path path = git.getRepository().getWorkTree().toPath();
 
             if(!Files.isDirectory(path)){
-                throw new RepositoryDownloaderException("Downloaded repository directory does not exists: " + path);
+                throw new SourceException("Downloaded repository directory does not exists: " + path);
             }
-            return path;
+            return new IngestionContext(workspaceLocation.id(), repositoryUrl, path);
         } catch (GitAPIException err){
 
-            throw new RepositoryDownloaderException("Failed to download repository: " + repositoryUrl, err);
+            throw new SourceException("Failed to download repository: " + repositoryUrl, err);
         }
     }
 
-
     @Override
-    public Path download(String repositoryUrl){
-        return downloadRepository(repositoryUrl);
+    public IngestionContext download(String repositoryUrl) {
+        return jGitDownloadRepository(repositoryUrl);
     }
 }

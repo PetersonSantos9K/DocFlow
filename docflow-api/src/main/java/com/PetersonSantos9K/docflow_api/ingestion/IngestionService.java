@@ -1,8 +1,8 @@
 package com.PetersonSantos9K.docflow_api.ingestion;
 
 
-import com.PetersonSantos9K.docflow_api.ingestion.repository.RepositoryDownloader;
-import com.PetersonSantos9K.docflow_api.ingestion.repository.JGitRepositoryDownloader;
+import com.PetersonSantos9K.docflow_api.ingestion.source.SourceProvider;
+import com.PetersonSantos9K.docflow_api.ingestion.source.JGitSourceProvider;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -13,25 +13,23 @@ import java.util.stream.Stream;
 @Service
 public class IngestionService {
 
-    private final RepositoryDownloader repositoryDownloader;
+    private final SourceProvider sourceProvider;
 
-    public IngestionService(JGitRepositoryDownloader jGit){
-        this.repositoryDownloader = jGit;
+    public IngestionService(JGitSourceProvider jGit){
+        this.sourceProvider = jGit;
     }
 
     public String repositoryDownloader(String repositoryUrl){
 
-        Path path = repositoryDownloader.download(repositoryUrl);
+        IngestionContext context = sourceProvider.download(repositoryUrl);
 
-        try (Stream<Path> paths = Files.walk(path)) {
+        try (Stream<Path> paths = Files.walk(context.getWorkspacePath())) {
             paths.forEach(System.out::println);
 
         } catch (IOException err){
 
+
         }
-
-
-
         return "";
     }
 

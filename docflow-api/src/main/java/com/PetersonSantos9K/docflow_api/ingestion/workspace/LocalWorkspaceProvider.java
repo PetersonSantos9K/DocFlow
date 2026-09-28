@@ -1,13 +1,13 @@
 package com.PetersonSantos9K.docflow_api.ingestion.workspace;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.UUID;
 
-@Service
+@Component
 public class LocalWorkspaceProvider {
 
     public LocalWorkspaceProvider(){}

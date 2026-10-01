@@ -3,15 +3,14 @@ package com.PetersonSantos9K.docflow_api.ingestion;
 import java.nio.file.Path;
 import java.util.UUID;
 
-public class IngestionContext {
+public class IngestionContext{
 
     private UUID id;
-    private String repositoryUrl;
+    private String name;
+    private String subPath;
+    private String urlRepositoryCloned;
+    private String urlRepositoryOrigin;
     private Path workspacePath;
-
-    public IngestionContext(UUID id, String repositoryUrl, Path workspacePath){
-        this.id = id;
-    }
 
     public UUID getId() {
         return id;
@@ -21,12 +20,36 @@ public class IngestionContext {
         this.id = id;
     }
 
-    public String getRepositoryUrl() {
-        return repositoryUrl;
+    public String getName() {
+        return name;
     }
 
-    public void setRepositoryUrl(String repositoryUrl) {
-        this.repositoryUrl = repositoryUrl;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSubPath() {
+        return subPath;
+    }
+
+    public void setSubPath(String subPath) {
+        this.subPath = subPath;
+    }
+
+    public String getUrlRepositoryCloned() {
+        return urlRepositoryCloned;
+    }
+
+    public void setUrlRepositoryCloned(String urlRepositoryCloned) {
+        this.urlRepositoryCloned = urlRepositoryCloned;
+    }
+
+    public String getUrlRepositoryOrigin() {
+        return urlRepositoryOrigin;
+    }
+
+    public void setUrlRepositoryOrigin(String urlRepositoryOrigin) {
+        this.urlRepositoryOrigin = urlRepositoryOrigin;
     }
 
     public Path getWorkspacePath() {

@@ -1,11 +1,10 @@
 package com.PetersonSantos9K.docflow_api.ingestion.source;
 
 import com.PetersonSantos9K.docflow_api.ingestion.IngestionContext;
-import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Locale;
+import java.util.regex.Pattern;
 
 @Component
 public class SourceProviderValidation {
@@ -15,39 +14,76 @@ public class SourceProviderValidation {
             "https://github.com/",
             "https://www.github.com/"
     );
+    private static final String CANONICAL_PREFIX = "https://github.com/";
 
-    public IngestionContext validation(String repositoryUrl){
+    private static final Pattern OWNER =
+            Pattern.compile("[a-zA-Z\\d](?:[a-zA-Z\\d]|-(?=[a-zA-Z\\d])){0,38}");
+    private static final Pattern REPO =
+            Pattern.compile("[\\w.-]+(?:/[\\w.-]+)*");
+    private static final Pattern TRAILING_SLASHES = Pattern.compile("/+$");
 
-        if(repositoryUrl == null){
-
+    public IngestionContext validation(String repositoryUrl) {
+        if (repositoryUrl == null || repositoryUrl.isBlank()) {
+            throw new SourceException("Repository URL must not be empty");
         }
-        repositoryUrl.trim();
-        if(repositoryUrl.isBlank() || repositoryUrl.length() > MAX_URL_LENGTH){
 
+        repositoryUrl = TRAILING_SLASHES.matcher(repositoryUrl.trim()).replaceAll("");
+        if (repositoryUrl.length() > MAX_URL_LENGTH) {
+            throw new SourceException("Repository URL is too long");
         }
 
+        String path = removePrefix(repositoryUrl);
+        String[] parts = path.split("/", 3);
 
-        return null;
+        if (parts.length < 2) {
+            throw new SourceException("URL must contain owner and repository");
+        }
+
+        String owner = parts[0];
+        String name = stripGitSuffix(parts[1]);
+        String subPath = parts.length > 2 ? parts[2] : null;
+
+        validateOwner(owner);
+        validateRepo(name + (subPath != null ? "/" + subPath : ""));
+        validateName(name);
+
+        var context = new IngestionContext();
+        context.setName(name);
+        context.setSubPath(subPath);
+        context.setUrlRepositoryCloned(CANONICAL_PREFIX + owner + "/" + name);
+        context.setUrlRepositoryOrigin(repositoryUrl);
+        return context;
     }
 
-    private String formatedUrlHttps(String url){
-
-
-
-        return null;
-    }
-
-    private String removePrefix(String url){
-
+    private String removePrefix(String url) {
         String prefix = ACCEPTED_PREFIXES.stream()
-                .filter(url::startsWith)
+                .filter(p -> url.regionMatches(true, 0, p, 0, p.length()))
                 .findFirst()
-                .orElseThrow(null);
-
-
+                .orElseThrow(() -> new SourceException("Unsupported URL prefix: " + url));
         return url.substring(prefix.length());
     }
 
+    private String stripGitSuffix(String name) {
+        int len = name.length();
+        return len > 4 && name.regionMatches(true, len - 4, ".git", 0, 4)
+                ? name.substring(0, len - 4)
+                : name;
+    }
+    private void validateOwner(String owner) {
+        if (!OWNER.matcher(owner).matches()) {
+            throw new SourceException("Invalid owner: " + owner);
+        }
+    }
 
+    private void validateName(String name){
+        if(name.isEmpty() || name.equals(".") || name.equals("..")){
+            throw new SourceException("Invalid repository name: " + name);
+        }
+    }
 
+    private void validateRepo(String repo) {
+        if (!REPO.matcher(repo).matches()) {
+            throw new SourceException("Invalid repository name: " + repo);
+        }
+    }
 }

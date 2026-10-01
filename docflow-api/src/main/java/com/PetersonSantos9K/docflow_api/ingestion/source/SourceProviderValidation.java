@@ -44,7 +44,7 @@ public class SourceProviderValidation {
         String subPath = parts.length > 2 ? parts[2] : null;
 
         validateOwner(owner);
-        validateRepo(name + (subPath != null ? "/" + subPath : ""));
+        validateRepositoryPath(name + (subPath != null ? "/" + subPath : ""));
         validateName(name);
 
         var context = new IngestionContext();
@@ -80,7 +80,7 @@ public class SourceProviderValidation {
         }
     }
 
-    private void validateRepo(String repo) {
+    private void validateRepositoryPath(String repo) {
         if (!REPO.matcher(repo).matches()) {
             throw new SourceException("Invalid repository name: " + repo);
         }

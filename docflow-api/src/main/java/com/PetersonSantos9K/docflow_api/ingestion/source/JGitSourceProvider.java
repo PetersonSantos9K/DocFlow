@@ -8,7 +8,6 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.springframework.stereotype.Component;
 
 import java.nio.file.Files;
-import java.nio.file.Path;
 
 @Component
 public class JGitSourceProvider implements SourceProvider {
@@ -19,33 +18,38 @@ public class JGitSourceProvider implements SourceProvider {
         this.validation = validation;
     }
 
-    private IngestionContext jGitDownloadRepository(String repositoryUrl){
+    private IngestionContext downloadRepository(String repositoryUrl){
         IngestionContext context = validation.validation(repositoryUrl);
         WorkspaceLocation workspaceLocation = LocalWorkspaceProvider.createWorkspace();
-
-
+        context.setId(workspaceLocation.id());
+        context.setWorkspacePath(workspaceLocation.path());
+        boolean success = false;
 
         try(Git git = Git.cloneRepository()
-                .setURI(repositoryUrl)
+                .setURI(context.getUrlRepositoryCloned())
                 .setDirectory(workspaceLocation.path().toFile())
                 .call()){
 
-            Path path = git.getRepository().getWorkTree().toPath();
-
-            if(!Files.isDirectory(path)) {
-                throw new SourceException("Downloaded repository directory does not exists: " + path);
+            if(!Files.isDirectory(workspaceLocation.path())) {
+                throw new SourceException("Downloaded repository directory does not exists: " + workspaceLocation.path());
             }
 
-            return new IngestionContext(workspaceLocation.id(), repositoryUrl, path);
-        } catch (GitAPIException err){
+            success = true;
+
+            return context;
+        } catch (GitAPIException err) {
             throw new SourceException("Failed to download repository: " + repositoryUrl, err);
+        } catch (SourceException err) {
+            throw err;
         } finally {
-            if(context.getWorkspacePath())
+            if(success == false){
+                LocalWorkspaceProvider.deleteWorkspace(workspaceLocation);
+            }
         }
     }
 
     @Override
     public IngestionContext download(String repositoryUrl) {
-        return jGitDownloadRepository(repositoryUrl);
+        return downloadRepository(repositoryUrl);
     }
 }

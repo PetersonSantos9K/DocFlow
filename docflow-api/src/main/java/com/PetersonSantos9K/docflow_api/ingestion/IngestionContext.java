@@ -11,6 +11,14 @@ public class IngestionContext{
     private String urlRepositoryCloned;
     private Path workspacePath;
 
+    public IngestionContext(UUID id, String name, String subPath, String urlRepositoryCloned, Path workspacePath) {
+        this.id = id;
+        this.name = name;
+        this.subPath = subPath;
+        this.urlRepositoryCloned = urlRepositoryCloned;
+        this.workspacePath = workspacePath;
+    }
+
     public UUID getId() {
         return id;
     }
@@ -49,5 +57,16 @@ public class IngestionContext{
 
     public void setWorkspacePath(Path workspacePath) {
         this.workspacePath = workspacePath;
+    }
+
+    @Override
+    public String toString() {
+        return "IngestionContext{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", subPath='" + subPath + '\'' +
+                ", urlRepositoryCloned='" + urlRepositoryCloned + '\'' +
+                ", workspacePath=" + workspacePath +
+                '}';
     }
 }

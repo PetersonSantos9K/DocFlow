@@ -10,11 +10,10 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 @Component
-public class LocalWorkspaceProvider {
+public class TmpWorkspaceProvider implements WorkspaceProvider{
 
-    public LocalWorkspaceProvider(){}
-
-    public static WorkspaceLocation createWorkspace(){
+    @Override
+    public WorkspaceInfo createWorkspace(){
         UUID id = UUID.randomUUID();
         Path path = Path.of(
                 "/tmp/docflow/jobs",
@@ -26,10 +25,11 @@ public class LocalWorkspaceProvider {
             throw new WorkspaceException("Failed to create workspace: " + path, e);
         }
 
-        return new WorkspaceLocation(id, path);
+        return new WorkspaceInfo(id, path);
     }
 
-    public static void deleteWorkspace(WorkspaceLocation workspaceLocation){
+    @Override
+    public void deleteWorkspace(WorkspaceInfo workspaceLocation){
         try(Stream<Path> paths = Files.walk(workspaceLocation.path())) {
 
             paths.sorted(Comparator.reverseOrder())

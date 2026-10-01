@@ -1,7 +1,9 @@
 package com.PetersonSantos9K.docflow_api.ingestion.source;
 
-import com.PetersonSantos9K.docflow_api.ingestion.IngestionContext;
+import com.PetersonSantos9K.docflow_api.ingestion.workspace.WorkspaceInfo;
+
+import java.nio.file.Path;
 
 public interface SourceProvider {
-    IngestionContext download(String repositoryUrl);
+    SourceInfo download(String repositoryUrl, Path workspacePath);
 }

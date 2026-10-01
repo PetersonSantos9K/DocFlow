@@ -1,6 +1,7 @@
 package com.PetersonSantos9K.docflow_api;
 
-import com.PetersonSantos9K.docflow_api.ingestion.source.SourceProviderValidation;
+import com.PetersonSantos9K.docflow_api.ingestion.IngestionContext;
+import com.PetersonSantos9K.docflow_api.ingestion.IngestionService;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
@@ -16,9 +17,8 @@ public class Application {
 		builder.run(args);
 
 		ApplicationContext applicationContext = builder.context();
-		var sourceProviderValidation = applicationContext.getBean(SourceProviderValidation.class);
-		sourceProviderValidation.validation("https://github.com/user/repo");
-
+		IngestionService bean = applicationContext.getBean(IngestionService.class);
+		bean.ingest("https://github.com/PetersonSantos9K/repository-teste-docflow.git");
 	}
 
 }

@@ -1,13 +1,11 @@
 package com.PetersonSantos9K.docflow_api.ingestion.source;
 
-import com.PetersonSantos9K.docflow_api.ingestion.IngestionContext;
-import com.PetersonSantos9K.docflow_api.ingestion.workspace.WorkspaceLocation;
-import com.PetersonSantos9K.docflow_api.ingestion.workspace.LocalWorkspaceProvider;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.springframework.stereotype.Component;
 
 import java.nio.file.Files;
+import java.nio.file.Path;
 
 @Component
 public class JGitSourceProvider implements SourceProvider {
@@ -18,38 +16,33 @@ public class JGitSourceProvider implements SourceProvider {
         this.validation = validation;
     }
 
-    private IngestionContext downloadRepository(String repositoryUrl){
-        IngestionContext context = validation.validation(repositoryUrl);
-        WorkspaceLocation workspaceLocation = LocalWorkspaceProvider.createWorkspace();
-        context.setId(workspaceLocation.id());
-        context.setWorkspacePath(workspaceLocation.path());
-        boolean success = false;
+    private SourceInfo downloadRepository(String repositoryUrl, Path workspacePath) {
+        var sourceValidationInfo = validation.validation(repositoryUrl);
 
         try(Git git = Git.cloneRepository()
-                .setURI(context.getUrlRepositoryCloned())
-                .setDirectory(workspaceLocation.path().toFile())
+                .setURI(sourceValidationInfo.cloneUrl())
+                .setDirectory(workspacePath.toFile())
                 .call()){
 
-            if(!Files.isDirectory(workspaceLocation.path())) {
-                throw new SourceException("Downloaded repository directory does not exists: " + workspaceLocation.path());
+            if(!Files.isDirectory(workspacePath)) {
+                throw new SourceException("Downloaded repository directory does not exists: " + workspacePath);
             }
 
-            success = true;
-
-            return context;
+            return new SourceInfo(
+                    sourceValidationInfo.name(),
+                    sourceValidationInfo.subPath(),
+                    sourceValidationInfo.cloneUrl()
+            );
         } catch (GitAPIException err) {
+
             throw new SourceException("Failed to download repository: " + repositoryUrl, err);
         } catch (SourceException err) {
             throw err;
-        } finally {
-            if(success == false){
-                LocalWorkspaceProvider.deleteWorkspace(workspaceLocation);
-            }
         }
     }
 
     @Override
-    public IngestionContext download(String repositoryUrl) {
-        return downloadRepository(repositoryUrl);
+    public SourceInfo download(String repositoryUrl, Path workspacePath) {
+        return downloadRepository(repositoryUrl, workspacePath);
     }
 }

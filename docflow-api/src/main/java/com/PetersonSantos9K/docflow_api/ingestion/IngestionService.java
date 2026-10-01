@@ -1,43 +1,57 @@
 package com.PetersonSantos9K.docflow_api.ingestion;
 
 
+import com.PetersonSantos9K.docflow_api.ingestion.source.SourceException;
+import com.PetersonSantos9K.docflow_api.ingestion.source.SourceInfo;
 import com.PetersonSantos9K.docflow_api.ingestion.source.SourceProvider;
 import com.PetersonSantos9K.docflow_api.ingestion.source.JGitSourceProvider;
+import com.PetersonSantos9K.docflow_api.ingestion.workspace.TmpWorkspaceProvider;
+import com.PetersonSantos9K.docflow_api.ingestion.workspace.WorkspaceException;
+import com.PetersonSantos9K.docflow_api.ingestion.workspace.WorkspaceInfo;
+import com.PetersonSantos9K.docflow_api.ingestion.workspace.WorkspaceProvider;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 @Service
 public class IngestionService {
 
     private final SourceProvider sourceProvider;
-
-    public IngestionService(JGitSourceProvider jGit){
+    private final WorkspaceProvider workspaceProvider;
+    public IngestionService(JGitSourceProvider jGit, TmpWorkspaceProvider tmp){
         this.sourceProvider = jGit;
+        this.workspaceProvider = tmp;
     }
 
-    public String repositoryDownloader(String repositoryUrl){
+    public IngestionContext ingest(String repositoryUrl){
 
-        IngestionContext context = sourceProvider.download(repositoryUrl);
+        WorkspaceInfo workspaceInfo = workspaceProvider.createWorkspace();
 
-        try (Stream<Path> paths = Files.walk(context.getWorkspacePath())) {
-            paths.forEach(System.out::println);
+        try{
+            SourceInfo sourceInfo = sourceProvider.download(repositoryUrl, workspaceInfo.path());
 
-        } catch (IOException err){
+            IngestionContext context = new IngestionContext(
+                    workspaceInfo.id(),
+                    sourceInfo.name(),
+                    sourceInfo.subPath(),
+                    sourceInfo.cloneUrl(),
+                    workspaceInfo.path()
+            );
 
-
+            return context;
+        } catch (SourceException err){
+            try{
+                workspaceProvider.deleteWorkspace(workspaceInfo);
+            } catch (WorkspaceException cleanupErr){
+                err.addSuppressed(cleanupErr);
+            }
+            throw err;
         }
-        return "";
+
     }
-
-
-
-
-
-
-
-
 }

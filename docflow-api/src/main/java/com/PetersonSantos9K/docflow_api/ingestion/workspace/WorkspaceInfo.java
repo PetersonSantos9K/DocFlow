@@ -3,7 +3,7 @@ package com.PetersonSantos9K.docflow_api.ingestion.workspace;
 import java.nio.file.Path;
 import java.util.UUID;
 
-public record WorkspaceLocation(
+public record WorkspaceInfo(
         UUID id,
         Path path
 ) {

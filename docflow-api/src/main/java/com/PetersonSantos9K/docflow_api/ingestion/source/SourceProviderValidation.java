@@ -1,6 +1,6 @@
 package com.PetersonSantos9K.docflow_api.ingestion.source;
 
-import com.PetersonSantos9K.docflow_api.ingestion.IngestionContext;
+import com.PetersonSantos9K.docflow_api.ingestion.source.validate.SourceValidationInfo;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -22,7 +22,7 @@ public class SourceProviderValidation {
             Pattern.compile("[\\w.-]+(?:/[\\w.-]+)*");
     private static final Pattern TRAILING_SLASHES = Pattern.compile("/+$");
 
-    public IngestionContext validation(String repositoryUrl) {
+    public SourceInfo validation(String repositoryUrl) {
         if (repositoryUrl == null || repositoryUrl.isBlank()) {
             throw new SourceException("Repository URL must not be empty");
         }
@@ -46,12 +46,7 @@ public class SourceProviderValidation {
         validateOwner(owner);
         validateRepositoryPath(name + (subPath != null ? "/" + subPath : ""));
         validateName(name);
-
-        var context = new IngestionContext();
-        context.setName(name);
-        context.setSubPath(subPath);
-        context.setUrlRepositoryCloned(CANONICAL_PREFIX + owner + "/" + name);
-        return context;
+        return new SourceInfo(name, subPath, CANONICAL_PREFIX + owner + "/" + name);
     }
 
     private String removePrefix(String url) {
@@ -68,6 +63,7 @@ public class SourceProviderValidation {
                 ? name.substring(0, len - 4)
                 : name;
     }
+
     private void validateOwner(String owner) {
         if (!OWNER.matcher(owner).matches()) {
             throw new SourceException("Invalid owner: " + owner);

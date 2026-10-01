@@ -13,8 +13,17 @@ import java.nio.file.Path;
 @Component
 public class JGitSourceProvider implements SourceProvider {
 
+    private final SourceProviderValidation validation;
+
+    public JGitSourceProvider(SourceProviderValidation validation){
+        this.validation = validation;
+    }
+
     private IngestionContext jGitDownloadRepository(String repositoryUrl){
+        IngestionContext context = validation.validation(repositoryUrl);
         WorkspaceLocation workspaceLocation = LocalWorkspaceProvider.createWorkspace();
+
+
 
         try(Git git = Git.cloneRepository()
                 .setURI(repositoryUrl)
@@ -23,13 +32,15 @@ public class JGitSourceProvider implements SourceProvider {
 
             Path path = git.getRepository().getWorkTree().toPath();
 
-            if(!Files.isDirectory(path)){
+            if(!Files.isDirectory(path)) {
                 throw new SourceException("Downloaded repository directory does not exists: " + path);
             }
+
             return new IngestionContext(workspaceLocation.id(), repositoryUrl, path);
         } catch (GitAPIException err){
-
             throw new SourceException("Failed to download repository: " + repositoryUrl, err);
+        } finally {
+            if(context.getWorkspacePath())
         }
     }
 

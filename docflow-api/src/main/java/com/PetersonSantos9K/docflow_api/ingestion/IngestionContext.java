@@ -9,7 +9,6 @@ public class IngestionContext{
     private String name;
     private String subPath;
     private String urlRepositoryCloned;
-    private String urlRepositoryOrigin;
     private Path workspacePath;
 
     public UUID getId() {
@@ -42,14 +41,6 @@ public class IngestionContext{
 
     public void setUrlRepositoryCloned(String urlRepositoryCloned) {
         this.urlRepositoryCloned = urlRepositoryCloned;
-    }
-
-    public String getUrlRepositoryOrigin() {
-        return urlRepositoryOrigin;
-    }
-
-    public void setUrlRepositoryOrigin(String urlRepositoryOrigin) {
-        this.urlRepositoryOrigin = urlRepositoryOrigin;
     }
 
     public Path getWorkspacePath() {

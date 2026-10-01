@@ -51,7 +51,6 @@ public class SourceProviderValidation {
         context.setName(name);
         context.setSubPath(subPath);
         context.setUrlRepositoryCloned(CANONICAL_PREFIX + owner + "/" + name);
-        context.setUrlRepositoryOrigin(repositoryUrl);
         return context;
     }
 

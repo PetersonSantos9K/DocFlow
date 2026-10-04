@@ -11,20 +11,27 @@
 	<groupId>com.PetersonSantos9K</groupId>
 	<artifactId>docflow-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name/>
-	<description/>
-	<url/>
+	<name>DocFlow API</name>
+	<description>REST API for intelligent source code analysis and documentation generation.</description>
+	<url>https://github.com/PetersonSantos9K/DocFlow/tree/main/docflow-api</url>
 	<licenses>
-		<license/>
+		<license >
+			<name>MIT License</name>
+			<url>https://opensource.org/licenses/MIT</url>
+		</license>
 	</licenses>
 	<developers>
-		<developer/>
+		<developer>
+			<id>PetersonSantos9K</id>
+			<name>Peterson Santos</name>
+			<url>https://github.com/PetersonSantos9K</url>
+		</developer>
 	</developers>
 	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
+		<connection>scm:git:https://github.com/PetersonSantos9K/DocFlow.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com/PetersonSantos9K/DocFlow.git</developerConnection>
+		<tag>HEAD</tag>
+		<url>https://github.com/PetersonSantos9K/DocFlow/tree/main/docflow-api</url>
 	</scm>
 	<properties>
 		<java.version>25</java.version>

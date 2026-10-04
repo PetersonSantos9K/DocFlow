@@ -1,6 +1,5 @@
 package com.PetersonSantos9K.docflow_api.ingestion.source;
 
-import com.PetersonSantos9K.docflow_api.ingestion.source.validate.SourceValidationInfo;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -46,7 +45,7 @@ public class SourceProviderValidation {
         validateOwner(owner);
         validateRepositoryPath(name + (subPath != null ? "/" + subPath : ""));
         validateName(name);
-        return new SourceInfo(name, subPath, CANONICAL_PREFIX + owner + "/" + name);
+        return new SourceInfo(owner, name, subPath, CANONICAL_PREFIX + owner + "/" + name, repositoryUrl);
     }
 
     private String removePrefix(String url) {

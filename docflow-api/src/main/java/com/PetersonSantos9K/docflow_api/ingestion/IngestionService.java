@@ -33,7 +33,9 @@ public class IngestionService {
         WorkspaceInfo workspaceInfo = workspaceProvider.createWorkspace();
 
         try{
-            SourceInfo sourceInfo = sourceProvider.download(repositoryUrl, workspaceInfo.path());
+            var source = sourceProvider;
+            SourceInfo sourceInfo = source.fromRepositoryUrl(repositoryUrl);
+            source.download(sourceInfo, workspaceInfo.path());
 
             IngestionContext context = new IngestionContext(
                     workspaceInfo.id(),

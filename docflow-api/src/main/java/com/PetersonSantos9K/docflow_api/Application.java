@@ -1,12 +1,13 @@
 package com.PetersonSantos9K.docflow_api;
 
-import com.PetersonSantos9K.docflow_api.ingestion.IngestionContext;
 import com.PetersonSantos9K.docflow_api.ingestion.IngestionService;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 
 @SpringBootApplication
+@EnableConfigurationProperties
 public class Application {
 
 

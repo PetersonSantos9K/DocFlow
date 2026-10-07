@@ -18,7 +18,7 @@ public class JGitSourceProvider implements SourceProvider {
 
     @Override
     public SourceInfo fromRepositoryUrl(String repositoryUrl) {
-        return sourceProviderValidation.validation(repositoryUrl);
+        return sourceProviderValidation.validateAndExtract(repositoryUrl);
 
     }
 

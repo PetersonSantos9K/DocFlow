@@ -21,17 +21,9 @@ public class SourceProviderValidation {
             Pattern.compile("[\\w.-]+(?:/[\\w.-]+)*");
     private static final Pattern TRAILING_SLASHES = Pattern.compile("/+$");
 
-    public SourceInfo validation(String repositoryUrl) {
-        if (repositoryUrl == null || repositoryUrl.isBlank()) {
-            throw new SourceException("Repository URL must not be empty");
-        }
+    public SourceInfo validateAndExtract(String repositoryUrl) {
 
-        repositoryUrl = TRAILING_SLASHES.matcher(repositoryUrl.trim()).replaceAll("");
-        if (repositoryUrl.length() > MAX_URL_LENGTH) {
-            throw new SourceException("Repository URL is too long");
-        }
-
-        String path = removePrefix(repositoryUrl);
+        String path = normalize(repositoryUrl);
         String[] parts = path.split("/", 3);
 
         if (parts.length < 2) {
@@ -45,7 +37,19 @@ public class SourceProviderValidation {
         validateOwner(owner);
         validateRepositoryPath(name + (subPath != null ? "/" + subPath : ""));
         validateName(name);
-        return new SourceInfo(owner, name, subPath, CANONICAL_PREFIX + owner + "/" + name, repositoryUrl);
+        return new SourceInfo(owner, name, subPath,  CANONICAL_PREFIX + owner + "/" + name, repositoryUrl);
+    }
+    private String normalize(String repositoryUrl) {
+
+        if (repositoryUrl == null || repositoryUrl.isBlank()) {
+            throw new SourceException("Repository URL must not be empty");
+        }
+
+        repositoryUrl = TRAILING_SLASHES.matcher(repositoryUrl.trim()).replaceAll("");
+        if (repositoryUrl.length() > MAX_URL_LENGTH) {
+            throw new SourceException("Repository URL is too long");
+        }
+        return removePrefix(repositoryUrl);
     }
 
     private String removePrefix(String url) {

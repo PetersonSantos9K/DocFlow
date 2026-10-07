@@ -10,7 +10,6 @@ public class RepositoryEligibilityService {
 
     private final ClientRepo clientRepo;
 
-    @Value("${integration.max-repository-size}")
     private final DataSize maxRepositorySize;
 
     public RepositoryEligibilityService(@Qualifier("gitHubApiClient") ClientRepo clientRepo, @Value("${integration.max-repository-size}") DataSize maxRepositorySize) {

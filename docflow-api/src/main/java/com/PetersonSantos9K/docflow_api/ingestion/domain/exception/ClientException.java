@@ -1,6 +1,5 @@
-package com.PetersonSantos9K.docflow_api.ingestion.client;
+package com.PetersonSantos9K.docflow_api.ingestion.domain.exception;
 
-import com.PetersonSantos9K.docflow_api.ingestion.IngestionException;
 public class ClientException extends IngestionException {
     public ClientException(String message, Throwable cause) {
         super(message, cause);

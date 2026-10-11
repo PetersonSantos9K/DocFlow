@@ -1,4 +1,4 @@
-package com.PetersonSantos9K.docflow_api.ingestion.client;
+package com.PetersonSantos9K.docflow_api.ingestion.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

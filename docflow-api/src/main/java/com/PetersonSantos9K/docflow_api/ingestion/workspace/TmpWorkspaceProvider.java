@@ -1,5 +1,7 @@
 package com.PetersonSantos9K.docflow_api.ingestion.workspace;
 
+import com.PetersonSantos9K.docflow_api.ingestion.domain.exception.WorkspaceException;
+import com.PetersonSantos9K.docflow_api.ingestion.domain.model.WorkspaceInfo;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;

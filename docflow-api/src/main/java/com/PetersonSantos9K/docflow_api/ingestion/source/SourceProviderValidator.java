@@ -1,12 +1,14 @@
 package com.PetersonSantos9K.docflow_api.ingestion.source;
 
+import com.PetersonSantos9K.docflow_api.ingestion.domain.exception.SourceException;
+import com.PetersonSantos9K.docflow_api.ingestion.domain.model.SourceInfo;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.regex.Pattern;
 
 @Component
-public class SourceProviderValidation {
+public class SourceProviderValidator {
 
     private static final int MAX_URL_LENGTH = 200;
     private static final List<String> ACCEPTED_PREFIXES = List.of(

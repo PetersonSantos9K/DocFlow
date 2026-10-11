@@ -1,5 +1,7 @@
 package com.PetersonSantos9K.docflow_api.ingestion.source;
 
+import com.PetersonSantos9K.docflow_api.ingestion.domain.exception.SourceException;
+import com.PetersonSantos9K.docflow_api.ingestion.domain.model.SourceInfo;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.springframework.stereotype.Component;
@@ -10,15 +12,15 @@ import java.nio.file.Path;
 @Component
 public class JGitSourceProvider implements SourceProvider {
 
-    private final SourceProviderValidation sourceProviderValidation;
+    private final SourceProviderValidator sourceProviderValidator;
 
-    public JGitSourceProvider(SourceProviderValidation validation){
-        this.sourceProviderValidation = validation;
+    public JGitSourceProvider(SourceProviderValidator validation){
+        this.sourceProviderValidator = validation;
     }
 
     @Override
     public SourceInfo fromRepositoryUrl(String repositoryUrl) {
-        return sourceProviderValidation.validateAndExtract(repositoryUrl);
+        return sourceProviderValidator.validateAndExtract(repositoryUrl);
 
     }
 

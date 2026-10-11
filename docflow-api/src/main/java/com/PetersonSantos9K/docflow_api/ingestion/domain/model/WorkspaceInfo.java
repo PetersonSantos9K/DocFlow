@@ -1,4 +1,4 @@
-package com.PetersonSantos9K.docflow_api.ingestion.workspace;
+package com.PetersonSantos9K.docflow_api.ingestion.domain.model;
 
 import java.nio.file.Path;
 import java.util.UUID;

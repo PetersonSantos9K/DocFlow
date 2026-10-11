@@ -1,6 +1,6 @@
 package com.PetersonSantos9K.docflow_api;
 
-import com.PetersonSantos9K.docflow_api.ingestion.IngestionService;
+import com.PetersonSantos9K.docflow_api.ingestion.application.IngestionOrchestrator;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -18,7 +18,7 @@ public class Application {
 		builder.run(args);
 
 		ApplicationContext applicationContext = builder.context();
-		IngestionService bean = applicationContext.getBean(IngestionService.class);
+		IngestionOrchestrator bean = applicationContext.getBean(IngestionOrchestrator.class);
 		bean.ingest("https://github.com/PetersonSantos9K/repository-teste-docflow.git");
 	}
 

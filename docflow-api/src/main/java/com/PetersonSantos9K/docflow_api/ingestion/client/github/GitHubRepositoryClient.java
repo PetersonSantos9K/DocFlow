@@ -1,8 +1,8 @@
 package com.PetersonSantos9K.docflow_api.ingestion.client.github;
 
-import com.PetersonSantos9K.docflow_api.ingestion.client.ClientRepo;
-import com.PetersonSantos9K.docflow_api.ingestion.client.RepositoryInfo;
-import com.PetersonSantos9K.docflow_api.ingestion.client.ClientException;
+import com.PetersonSantos9K.docflow_api.ingestion.client.RepositoryClient;
+import com.PetersonSantos9K.docflow_api.ingestion.domain.model.RepositoryInfo;
+import com.PetersonSantos9K.docflow_api.ingestion.domain.exception.ClientException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
@@ -12,11 +12,11 @@ import org.springframework.web.client.RestClientException;
 import java.util.Optional;
 
 @Component
-public class GitHubApiClient implements ClientRepo {
+public class GitHubRepositoryClient implements RepositoryClient {
 
     private final RestClient restClient;
 
-    public GitHubApiClient(@Qualifier("gitHubRestClient") RestClient restClient) {
+    public GitHubRepositoryClient(@Qualifier("gitHubRestClient") RestClient restClient) {
         this.restClient = restClient;
     }
 

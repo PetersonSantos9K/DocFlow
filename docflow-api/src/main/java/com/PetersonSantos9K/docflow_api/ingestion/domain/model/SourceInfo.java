@@ -1,4 +1,4 @@
-package com.PetersonSantos9K.docflow_api.ingestion.source;
+package com.PetersonSantos9K.docflow_api.ingestion.domain.model;
 
 public record SourceInfo(
         String owner,

@@ -1,6 +1,4 @@
-package com.PetersonSantos9K.docflow_api.ingestion.source;
-
-import com.PetersonSantos9K.docflow_api.ingestion.IngestionException;
+package com.PetersonSantos9K.docflow_api.ingestion.domain.exception;
 
 public class SourceException extends IngestionException {
     public SourceException(String message, Throwable cause) {

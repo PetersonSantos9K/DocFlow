@@ -1,8 +1,8 @@
 spring:
   application:
-    name: docflow-api
+    name: docflow
   datasource:
-    url: jdbc:h2:mem:docflow
+    url: jdbc:h2:mem:testdb
     username: sa
     password: sa
   jpa:
@@ -20,4 +20,4 @@ integration:
         base-url: https://api.github.com
         connect-timeout: 2s
         read-timeout: 5s
-        token: ${GITHUB_TOKEN}
+        token: ${GITHUB_TOKEN:}

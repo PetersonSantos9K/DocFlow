@@ -1,4 +1,4 @@
-package com.docflow.ingestion.application;
+package com.docflow.ingestion.orchestrator;
 
 
 import com.docflow.ingestion.client.RepositoryClient;

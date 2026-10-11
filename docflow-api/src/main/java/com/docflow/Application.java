@@ -1,6 +1,6 @@
 package com.docflow;
 
-import com.docflow.ingestion.application.IngestionOrchestrator;
+import com.docflow.ingestion.orchestrator.IngestionOrchestrator;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

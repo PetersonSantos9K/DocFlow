@@ -2,6 +2,7 @@ package com.docflow.ingestion.workspace;
 
 import com.docflow.ingestion.domain.exception.WorkspaceException;
 import com.docflow.ingestion.domain.model.WorkspaceInfo;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -12,6 +13,7 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 @Component
+@Primary
 public class TmpWorkspaceProvider implements WorkspaceProvider{
 
     @Override

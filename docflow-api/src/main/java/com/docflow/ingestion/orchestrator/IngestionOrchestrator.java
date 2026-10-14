@@ -45,6 +45,7 @@ public class IngestionOrchestrator {
             sourceProvider.download(sourceInfo, workspaceInfo.path());
             return new IngestionContext(
                     workspaceInfo.id(),
+                    sourceInfo.owner(),
                     sourceInfo.repo(),
                     sourceInfo.subPath(),
                     sourceInfo.cloneUrl(),

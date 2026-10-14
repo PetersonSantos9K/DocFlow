@@ -5,7 +5,8 @@ import java.util.UUID;
 
 public record IngestionContext(
          UUID id,
-         String name,
+         String owner,
+         String repo,
          String subPath,
          String urlRepositoryCloned,
          Path workspacePath){

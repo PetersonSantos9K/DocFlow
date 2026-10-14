@@ -11,7 +11,7 @@ import org.springframework.context.ApplicationContext;
 public class Application {
 
 
-	public static void main(String[] args) {
+	static void main(String[] args) {
 
 
 		var builder = new SpringApplicationBuilder(Application.class);
